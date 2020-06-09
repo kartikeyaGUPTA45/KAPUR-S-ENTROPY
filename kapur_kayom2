@@ -1,0 +1,63 @@
+%%%%%%% Calculation of Kapur's Entropy for m=5%%%%%%%%%%%%
+
+function [out]=kapur_kayom2(th,p,ch)
+
+% where 't' is the array containing the optimal thresholds obtained
+% 'p' is the normalized histogram
+% 'ch' is cummulative normalized histogram
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    t=sort(th);
+    t1=round(t(1));
+    t2=round(t(2));
+    
+    
+    
+    w0=double(ch(t1));          % class probability, w0
+    w1=double(ch(t2)-ch(t1));   % class probability, w1
+    
+    w2=1-(w0+w1);   
+    
+    % Entropy Calculation
+    H0=0;
+    if w0>0
+        for i=1:t1
+            if p(i)>0
+                H0=H0-(p(i)/w0)*log(p(i)/w0);
+            end
+        end
+    end
+    
+    
+    H1=0;
+    if w1>0
+        for i=t1+1:t2
+            if p(i)>0
+                H1=H1-(p(i)/w1)*log(p(i)/w1);
+            end
+        end
+    end
+    
+    
+    H2=0;
+    if w2>0
+        for i=t2+1:256
+            if p(i)>0
+                H2=H2-(p(i)/w2)*log(p(i)/w2);
+            end
+        end
+    end
+ 
+    
+    
+  
+    
+    
+    %%%% Objective function calculation %%%%
+    
+    out=H0+H1+H2;
+end
+
+
+
